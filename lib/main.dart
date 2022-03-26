@@ -3,9 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/contants/routes.dart';
 import 'package:myapp/firebase_options.dart';
-import 'package:myapp/views/login-views.dart';
-import 'package:myapp/views/register-view.dart';
-import 'package:myapp/views/verify_email-view.dart';
+import 'package:myapp/views/login_views.dart';
+import 'package:myapp/views/register_view.dart';
+import 'package:myapp/views/verify_email_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
