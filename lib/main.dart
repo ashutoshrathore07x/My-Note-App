@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/contants/routes.dart';
-
 import 'package:myapp/serices/auth/auth_services.dart';
 import 'package:myapp/views/login_views.dart';
 import 'package:myapp/views/notes_view.dart';

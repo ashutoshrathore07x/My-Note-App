@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myapp/serices/auth/auth_provider.dart';
 import 'package:myapp/serices/auth/auth_user.dart';
 import 'package:myapp/serices/auth/firebase_auth_provider.dart';
