@@ -1,7 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/contants/routes.dart';
 import 'package:myapp/enums/menu_action.dart';
 import 'package:myapp/serices/auth/auth_services.dart';
+import 'package:myapp/serices/crud/note_service.dart';
 
 class Notesview extends StatefulWidget {
   const Notesview({Key? key}) : super(key: key);
@@ -11,6 +13,22 @@ class Notesview extends StatefulWidget {
 }
 
 class _NotesviewState extends State<Notesview> {
+  late final NoteService _noteservice;
+  String get userEmail => AuthServices.firebase().currentUser!.email!;
+
+  @override
+  void initState() {
+    _noteservice = NoteService();
+    _noteservice.open();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _noteservice.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,8 +41,8 @@ class _NotesviewState extends State<Notesview> {
                 case MenuAction.logout:
                   final shouldLogout = await showLogoutDialog(context);
                   if (shouldLogout) {
-                   await AuthServices.firebase().logOut();
-                    
+                    await AuthServices.firebase().logOut();
+
                     Navigator.of(context).pushNamedAndRemoveUntil(
                       loginRoutes,
                       (_) => false,
@@ -42,6 +60,27 @@ class _NotesviewState extends State<Notesview> {
             },
           )
         ],
+      ),
+      body: FutureBuilder(
+        future: _noteservice.getOrCreateUser(email: userEmail),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              return StreamBuilder(
+                stream: _noteservice.allNotes,
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return const Text('waiting for all notes...');
+                    default:
+                      return const CircularProgressIndicator();
+                  }
+                },
+              );
+            default:
+              return const CircularProgressIndicator();
+          }
+        },
       ),
     );
   }
